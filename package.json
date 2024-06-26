@@ -21,13 +21,13 @@
     "rexpay-react-native-sdk",
     "RexpayReactNativeSdk"
   ],
-  "repository": "https://github.com/Matthew-Oluwajuwon/rexpay-react-native-sdk",
+  "repository": "https://github.com/accelerex-developer/RexPayReactNative",
   "bugs": {
-    "url": "https://github.com/Matthew-Oluwajuwon/rexpay-react-native-sdk/issues"
+    "url": "https://github.com/accelerex-developer/RexPayReactNative/issues"
   },
   "author": "matthew oluwajuwon <matthewoluwajuwon056@gmail.com> (https://github.com/Matthew-Oluwajuwon)",
   "license": "MIT",
-  "homepage": "https://github.com/Matthew-Oluwajuwon/rexpay-react-native-sdk#readme",
+  "homepage": "https://github.com/accelerex-developer/RexPayReactNative#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/react": "^18.0.25",
