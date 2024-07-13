@@ -1,0 +1,15 @@
+import { StyleSheet, View } from "react-native";
+import { Rexpay } from "rexpay-react-native";
+
+export default function App() {
+  return <View style={styles.container}>{Rexpay()}</View>;
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
