@@ -1,11 +1,26 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+import { Credentials } from "../../model/credentials";
 import { AppPayload } from "../../model/payload";
+import { CreatePayment } from "../../model/request";
+import {
+  CreatePaymentResponse,
+  PaymentDetails,
+  TransactionResponse,
+} from "../../model/response";
 import { App } from "../../model/state";
 
 export const appInitialState: App = {
   current: 0,
   showSinglePaymentMethod: false,
+  credentials: new Credentials(),
+  paymentDetails: new PaymentDetails(),
+  createPayment: new CreatePayment(),
+  createPaymentResponse: new CreatePaymentResponse(),
+  encryptedCredential: "",
+  showSuccessfulTransactionView: false,
+  showFailedTransactionView: false,
+  transactionResponse: new TransactionResponse(),
 };
 
 const appSlice = createSlice({

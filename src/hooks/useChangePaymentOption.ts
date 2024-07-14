@@ -4,12 +4,15 @@ import { store } from "../store";
 import { setAppKey } from "../store/slices/app.slice";
 
 export interface PaymentOptionsFunction {
-  onChangePaymentOption: (current: number) => void;
+  onChangePaymentOption: (
+    current: number,
+    showSinglePaymentMethod?: boolean,
+  ) => void;
 }
 
 const useChangePaymentOption = (): PaymentOptionsFunction => {
   const onChangePaymentOption = useCallback(
-    (current: number) => {
+    (current: number, showSinglePaymentMethod?: boolean) => {
       store.dispatch(
         setAppKey({
           key: "current",
@@ -19,7 +22,7 @@ const useChangePaymentOption = (): PaymentOptionsFunction => {
       store.dispatch(
         setAppKey({
           key: "showSinglePaymentMethod",
-          value: true,
+          value: showSinglePaymentMethod ?? true,
         }),
       );
     },

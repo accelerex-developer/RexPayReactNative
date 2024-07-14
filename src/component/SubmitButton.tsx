@@ -1,11 +1,21 @@
 import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native";
 
 export interface SubmitButtonProps extends TouchableOpacityProps {
   children: any;
+  loading?: boolean;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...props }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  children,
+  loading,
+  ...props
+}) => {
   return (
     <TouchableOpacity
       style={{
@@ -15,9 +25,18 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ children, ...props }) => {
         paddingHorizontal: 16,
         paddingVertical: 15,
         borderRadius: 4,
+        flexDirection: "row",
       }}
       {...props}
     >
+      {loading && (
+        <ActivityIndicator
+          color="#ffffff"
+          style={{
+            marginRight: 5,
+          }}
+        />
+      )}
       <Text
         style={{
           color: "white",

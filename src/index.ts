@@ -1,1 +1,4 @@
-export { default as Rexpay } from "./Rexpay";
+import Rexpay from "./Rexpay";
+import { Credentials } from "./model/credentials";
+
+export { Rexpay, Credentials };

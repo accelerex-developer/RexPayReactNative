@@ -1,11 +1,56 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useCallback } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
 
 import SubmitButton from "../../component/SubmitButton";
+import { useGetTransactionStatusMutation } from "../../store/api.config";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setAppKey } from "../../store/slices/app.slice";
 
 const AccountDetails = () => {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => {
+    return state.bank;
+  });
+  const [getTransactionStatus, transactionStatusResponse] =
+    useGetTransactionStatusMutation();
+
+  const onGetTransactionStatus = useCallback(async () => {
+    try {
+      const response = await getTransactionStatus(
+        state.response?.transactionReference,
+      );
+
+      if (response.data?.responseCode === "00") {
+        dispatch(
+          setAppKey({
+            key: "showSuccessfulTransactionView",
+            value: true,
+          }),
+        );
+        dispatch(
+          setAppKey({
+            key: "transactionResponse",
+            value: response.data,
+          }),
+        );
+      } else if (response.data?.responseCode === "02") {
+        Alert.alert("Transaction Pending", response.data?.responseDescription);
+      } else {
+        dispatch(
+          setAppKey({
+            key: "transactionResponse",
+            value: response.data,
+          }),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error occurred", "Something went wrong, try again later.");
+    }
+  }, []);
+
   return (
-    <View>
+    <View style={{ position: "relative", flex: 1 }}>
       <Text style={styles.headerText}>
         Kindly proceed to your banking app mobile/internet to complete your bank
         transfer.
@@ -37,7 +82,7 @@ const AccountDetails = () => {
               fontWeight: "700",
             }}
           >
-            Wema Bank
+            {state.response?.bankName}
           </Text>
         </View>
         <View
@@ -54,7 +99,7 @@ const AccountDetails = () => {
               fontWeight: "700",
             }}
           >
-            Ajibola Fasasi
+            {state.response?.accountName}
           </Text>
         </View>
         <View
@@ -71,11 +116,24 @@ const AccountDetails = () => {
               fontWeight: "700",
             }}
           >
-            0023456748
+            {state.response?.accountNumber}
           </Text>
         </View>
       </View>
-      <SubmitButton>I have completed the transfer</SubmitButton>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 40,
+          width: "100%",
+        }}
+      >
+        <SubmitButton
+          loading={transactionStatusResponse.isLoading}
+          onPress={onGetTransactionStatus}
+        >
+          I have completed the transfer
+        </SubmitButton>
+      </View>
     </View>
   );
 };

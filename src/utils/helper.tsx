@@ -1,6 +1,7 @@
 import Bank from "../features/Bank/Bank";
 import Card from "../features/Card/Card";
 import USSD from "../features/USSD/USSD";
+import { store } from "../store";
 
 export enum FormMethod {
   POST = "POST",
@@ -30,3 +31,13 @@ export const paymentOptions = [
     component: <Bank />,
   },
 ];
+
+export const getCredentials = () => {
+  const state = store.getState();
+  const username = state?.app?.credentials?.username;
+  const password = state?.app?.credentials?.password;
+  if (username && password) {
+    return btoa(`${username}:${password}`);
+  }
+  return null;
+};

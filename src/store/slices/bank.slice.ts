@@ -1,10 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { BankPayload } from "../../model/payload";
+import { BankTransfer } from "../../model/request";
+import { BankTransferResponse } from "../../model/response";
 import { Bank } from "../../model/state";
 
 export const bankInitialState: Bank = {
-  request: {},
+  request: new BankTransfer(),
+  response: new BankTransferResponse(),
+  showAccountDetails: false,
 };
 
 const bankSlice = createSlice({

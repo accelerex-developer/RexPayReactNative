@@ -1,9 +1,23 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { baseQuery, baseQueryWithReauth } from "./baseQueryWithReauth";
+import { store } from ".";
 import { endpoints } from "./endpoints";
-import { Card } from "../model/state";
+import { setAppKey } from "./slices/app.slice";
+import { App, Bank } from "../model/state";
 import { FormMethod } from "../utils/helper";
+
+type BaseQueryType = ReturnType<typeof fetchBaseQuery>;
+
+export const baseQueryWithReauth: (baseQuery: BaseQueryType) => BaseQueryType =
+  (baseQuery) => async (args, api, extraOptions) => {
+    const result = await baseQuery(args, api, extraOptions);
+
+    return result;
+  };
+
+export const baseQuery = fetchBaseQuery({
+  baseUrl: "https://pgs-sandbox.globalaccelerex.com",
+});
 
 export const apiConfig = createApi({
   reducerPath: "api",
@@ -13,15 +27,71 @@ export const apiConfig = createApi({
   refetchOnMountOrArgChange: false,
   endpoints: (builder) => ({
     createPayment: builder.mutation({
-      query: (state: Card) => {
+      query: (state: App) => {
+        const username = state?.credentials?.username;
+        const password = state?.credentials?.password;
+        const credentials = btoa(`${username}:${password}`);
         return {
           url: endpoints.create_payment,
           method: FormMethod.POST,
+          body: state.createPayment,
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        };
+      },
+    }),
+    getPaymentDetails: builder.query({
+      query: (state: App) => {
+        const username = state?.credentials?.username;
+        const password = state?.credentials?.password;
+        const credentials = btoa(`${username}:${password}`);
+        store.dispatch(
+          setAppKey({
+            key: "encryptedCredential",
+            value: credentials,
+          }),
+        );
+        return {
+          url: endpoints.payment_details + state.credentials.reference,
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        };
+      },
+    }),
+    initialBankTransfer: builder.mutation({
+      query: (state: Bank) => {
+        return {
+          url: endpoints.charge_by_transfer,
+          method: "POST",
           body: state.request,
+          headers: {
+            Authorization: `Basic ${store.getState().app?.encryptedCredential}`,
+          },
+        };
+      },
+    }),
+    getTransactionStatus: builder.mutation({
+      query: (transactionReference: string) => {
+        return {
+          url: endpoints.transaction_status,
+          method: "POST",
+          body: {
+            transactionReference,
+          },
+          headers: {
+            Authorization: `Basic ${store.getState().app?.encryptedCredential}`,
+          },
         };
       },
     }),
   }),
 });
 
-export const { useCreatePaymentMutation } = apiConfig;
+export const {
+  useCreatePaymentMutation,
+  useGetPaymentDetailsQuery,
+  useInitialBankTransferMutation,
+  useGetTransactionStatusMutation,
+} = apiConfig;
