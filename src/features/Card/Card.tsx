@@ -125,6 +125,7 @@ const Card = () => {
               placeholder="PIN"
               keyboardType="number-pad"
               onChangeText={handlePinChange}
+              isError={!!pinErr}
               // value={pin}
             />
           </View>
