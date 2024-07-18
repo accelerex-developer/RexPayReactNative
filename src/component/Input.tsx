@@ -1,14 +1,22 @@
 import React from "react";
 import { View, TextInput, TextInputProps } from "react-native";
 
-const Input: React.FC<TextInputProps> = ({ ...props }) => {
+interface InputProps extends TextInputProps {
+  suffix?: any;
+  isError?: boolean;
+}
+
+const Input: React.FC<InputProps> = ({ suffix, isError, ...props }) => {
   return (
     <View
       style={{
-        borderColor: "#DFDEDE",
+        borderColor: isError ? "#ff0000" : "#DFDEDE",
         borderWidth: 1,
         padding: 15,
         flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
       <TextInput
@@ -19,6 +27,7 @@ const Input: React.FC<TextInputProps> = ({ ...props }) => {
         }}
         {...props}
       />
+      {suffix}
     </View>
   );
 };

@@ -7,4 +7,14 @@ export class Credentials {
   password: string = "";
   mode: "TEST" | "STAGING" | "LIVE" = "TEST";
   reference?: string = "";
+  amount?: number = 0;
+  currency?: string = "";
+  userId?: string = "";
+  callbackUrl?: string = "";
+  metadata?: Metadata = new Metadata();
+}
+
+export class Metadata {
+  email: string = "";
+  customerName: string = "";
 }

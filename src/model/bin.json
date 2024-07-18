@@ -1,0 +1,41 @@
+{
+   "Bin": [
+     {
+       "Id": 1,
+       "Name": "VISA",
+       "MinPanLength": 13,
+       "MaxPanLength": 19,
+       "BinRangeMinimum": 4,
+       "BinRangeMaximum": 4,
+       "BinImage": ""
+     },
+     {
+       "Id": 2,
+       "Name": "MASTERCARD",
+       "MinPanLength": 16,
+       "MaxPanLength": 16,
+       "BinRangeMinimum": 51,
+       "BinRangeMaximum": 55,
+       "BinImage": ""
+     },
+     {
+       "Id": 3,
+       "Name": "VERVE",
+       "MinPanLength": 16,
+       "MaxPanLength": 20,
+       "BinRangeMinimum": 506099,
+       "BinRangeMaximum": 650027,
+       "BinImage": ""
+     },
+     {
+       "Id": 4,
+       "Name": "MASTERCARD",
+       "MinPanLength": 13,
+       "MaxPanLength": 19,
+       "BinRangeMinimum": 2221,
+       "BinRangeMaximum": 2720,
+       "BinImage": ""
+     }
+   ]
+ }
+ 

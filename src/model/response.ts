@@ -76,3 +76,25 @@ export class TransactionResponse {
   responseDescription: string = "";
   transactionDate: string = "";
 }
+
+export class USSDPaymentResponse {
+  reference: string = "";
+  clientId: string = "";
+  status: string = "";
+  paymentChannel: string = "";
+  providerResponse: string | any = "";
+  providerExtraInfo: string = "";
+  fees: number = 0;
+  currency: string = "";
+  currentNumberOfPayment: number = 0;
+}
+
+export interface Bin {
+  Id: number;
+  Name: string;
+  MinPanLength: number;
+  MaxPanLength: number;
+  BinRangeMinimum: number;
+  BinRangeMaximum: number;
+  BinImage: string;
+}

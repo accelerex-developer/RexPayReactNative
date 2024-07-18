@@ -47,7 +47,7 @@ const AccountDetails = () => {
       console.log(error);
       Alert.alert("Error occurred", "Something went wrong, try again later.");
     }
-  }, []);
+  }, [dispatch, state]);
 
   return (
     <View style={{ position: "relative", flex: 1 }}>

@@ -18,3 +18,17 @@ export class BankTransfer {
   amount: number = 0;
   customerId: string = "";
 }
+
+export class InsertPublicKey {
+  clientId: string = "";
+  publicKey: string = "";
+}
+
+export class USSDPayment {
+  reference: string = "";
+  userId: string = "";
+  amount: number = 0;
+  currency: string = "";
+  callbackUrl: string = "";
+  paymentChannel: string = "";
+}

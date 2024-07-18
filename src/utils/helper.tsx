@@ -41,3 +41,13 @@ export const getCredentials = () => {
   }
   return null;
 };
+
+export enum CardTypes {
+  MASTERCARD = "mastercard",
+  VISA = "visa",
+  VERVE = "verve",
+  AFRIGROBAL = "afriglobal",
+  AMEX = "amex",
+  DISCOVER = "discover",
+  NOT_FOUND = "",
+}

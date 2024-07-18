@@ -1,10 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { USSDPayload } from "../../model/payload";
+import { USSDPayment } from "../../model/request";
+import { USSDPaymentResponse } from "../../model/response";
 import { USSD } from "../../model/state";
 
 export const ussdInitialState: USSD = {
-  request: {},
+  request: new USSDPayment(),
+  response: new USSDPaymentResponse(),
 };
 
 const ussdSlice = createSlice({

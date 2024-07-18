@@ -5,6 +5,7 @@ import { Card } from "../../model/state";
 
 export const cardInitialState: Card = {
   request: {},
+  cardType: "",
 };
 
 const cardSlice = createSlice({

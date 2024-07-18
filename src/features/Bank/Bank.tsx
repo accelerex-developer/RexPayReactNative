@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Alert } from "react-native";
 
 import AccountDetails from "./AccountDetails";
 import SubmitButton from "../../component/SubmitButton";
-import { useInitialBankTransferMutation } from "../../store/api.config";
+import { useInititateBankTransferMutation } from "../../store/api.config";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setBankKey } from "../../store/slices/bank.slice";
 
@@ -16,7 +16,7 @@ const Bank = () => {
     return state.app;
   });
   const [initiateBankTransfer, bankTransferResponse] =
-    useInitialBankTransferMutation();
+    useInititateBankTransferMutation();
 
   const onInitiateBankTranfer = useCallback(async () => {
     try {

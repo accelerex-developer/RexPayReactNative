@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { store } from ".";
 import { endpoints } from "./endpoints";
 import { setAppKey } from "./slices/app.slice";
-import { App, Bank } from "../model/state";
+import { App, Bank, USSD } from "../model/state";
 import { FormMethod } from "../utils/helper";
 
 type BaseQueryType = ReturnType<typeof fetchBaseQuery>;
@@ -41,6 +41,18 @@ export const apiConfig = createApi({
         };
       },
     }),
+    insertPublicKey: builder.mutation({
+      query: (state: App) => {
+        return {
+          url: endpoints.insert_publickey,
+          method: FormMethod.POST,
+          body: state.insertPublickey,
+          headers: {
+            Authorization: `Basic ${store.getState().app?.encryptedCredential}`,
+          },
+        };
+      },
+    }),
     getPaymentDetails: builder.query({
       query: (state: App) => {
         const username = state?.credentials?.username;
@@ -60,7 +72,7 @@ export const apiConfig = createApi({
         };
       },
     }),
-    initialBankTransfer: builder.mutation({
+    inititateBankTransfer: builder.mutation({
       query: (state: Bank) => {
         return {
           url: endpoints.charge_by_transfer,
@@ -86,12 +98,26 @@ export const apiConfig = createApi({
         };
       },
     }),
+    initiateUssdPayment: builder.mutation({
+      query: (state: USSD) => {
+        return {
+          url: endpoints.charge_by_ussd,
+          method: "POST",
+          body: state.request,
+          headers: {
+            Authorization: `Basic ${store.getState().app?.encryptedCredential}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
 export const {
   useCreatePaymentMutation,
   useGetPaymentDetailsQuery,
-  useInitialBankTransferMutation,
+  useInititateBankTransferMutation,
   useGetTransactionStatusMutation,
+  useInsertPublicKeyMutation,
+  useInitiateUssdPaymentMutation,
 } = apiConfig;

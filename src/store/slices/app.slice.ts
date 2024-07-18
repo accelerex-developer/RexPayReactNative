@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import { Credentials } from "../../model/credentials";
 import { AppPayload } from "../../model/payload";
-import { CreatePayment } from "../../model/request";
+import { CreatePayment, InsertPublicKey } from "../../model/request";
 import {
   CreatePaymentResponse,
   PaymentDetails,
@@ -21,6 +21,7 @@ export const appInitialState: App = {
   showSuccessfulTransactionView: false,
   showFailedTransactionView: false,
   transactionResponse: new TransactionResponse(),
+  insertPublickey: new InsertPublicKey(),
 };
 
 const appSlice = createSlice({

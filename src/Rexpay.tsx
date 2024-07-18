@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   ActivityIndicator,
-  Alert,
   Dimensions,
   Image,
   Modal,
@@ -15,11 +14,15 @@ import { Provider } from "react-redux";
 
 import Footer from "./component/Footer";
 import Menu from "./component/Menu";
+import TransactionFailed from "./component/TransactionFailed";
 import TransactionSuccessful from "./component/TransactionSuccessful";
 import useChangePaymentOption from "./hooks/useChangePaymentOption";
 import { Credentials } from "./model/credentials";
 import { store } from "./store";
-import { useGetPaymentDetailsQuery } from "./store/api.config";
+import {
+  useGetPaymentDetailsQuery,
+  useInsertPublicKeyMutation,
+} from "./store/api.config";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { setAppKey } from "./store/slices/app.slice";
 import { paymentOptions } from "./utils/helper";
@@ -30,7 +33,9 @@ const App: React.FC<Credentials> = (props) => {
     return state.app;
   });
   const { onChangePaymentOption } = useChangePaymentOption();
-  const { data, isLoading, error, isError } = useGetPaymentDetailsQuery(state, {
+  const [insertPublicKey, insertPublicKeyResponse] =
+    useInsertPublicKeyMutation();
+  const { data, isLoading, isError, error } = useGetPaymentDetailsQuery(state, {
     skip: !props.reference,
   });
 
@@ -49,12 +54,54 @@ const App: React.FC<Credentials> = (props) => {
     );
   }, [props, data]);
 
-  if (isError && error) {
-    Alert.alert(
-      "Error occurred",
-      error?.data?.responseMessage ?? "Something went wrong, try again later.",
-    );
-  }
+  React.useEffect(() => {
+    if (!props.reference && !props.amount && !props.userId) {
+      dispatch(
+        setAppKey({
+          key: "showFailedTransactionView",
+          value: true,
+        }),
+      );
+      dispatch(
+        setAppKey({
+          key: "message",
+          value:
+            "You need to pass either the transaction reference if transaction was initiated by you or pass the reference, amount and userId if you want the SDK to initiate the transaction",
+        }),
+      );
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (isError) {
+      dispatch(
+        setAppKey({
+          key: "showFailedTransactionView",
+          value: true,
+        }),
+      );
+      dispatch(
+        setAppKey({
+          key: "message",
+          value: error?.data?.responseMessage ?? error?.error,
+        }),
+      );
+    }
+  }, [isError, error, dispatch]);
+
+  React.useEffect(() => {
+    const onInsertPublicKey = async () => {
+      await insertPublicKey({
+        ...state,
+        insertPublicKey: {
+          clientId: props.username,
+          publicKey: props.publicKey,
+        },
+      });
+    };
+
+    onInsertPublicKey();
+  }, [props]);
 
   return (
     <Modal style={styles.container}>
@@ -65,7 +112,9 @@ const App: React.FC<Credentials> = (props) => {
         }}
         style={styles.image}
       />
-      {!state.showSuccessfulTransactionView ? (
+      {state.showFailedTransactionView ? (
+        <TransactionFailed />
+      ) : state.showSuccessfulTransactionView ? (
         <TransactionSuccessful />
       ) : state.showSinglePaymentMethod ? (
         <View
@@ -106,7 +155,7 @@ const App: React.FC<Credentials> = (props) => {
         </View>
       ) : (
         <View style={[{ margin: "auto" }, styles.card]}>
-          {isLoading ? (
+          {isLoading || insertPublicKeyResponse.isLoading ? (
             <ActivityIndicator
               style={{
                 position: "absolute",
