@@ -16,92 +16,20 @@ import Footer from "./component/Footer";
 import Menu from "./component/Menu";
 import TransactionFailed from "./component/TransactionFailed";
 import TransactionSuccessful from "./component/TransactionSuccessful";
-import useChangePaymentOption from "./hooks/useChangePaymentOption";
+import usePageInitialization from "./hooks/usePageInitialization";
 import { Credentials } from "./model/credentials";
 import { store } from "./store";
-import {
-  useGetPaymentDetailsQuery,
-  useInsertPublicKeyMutation,
-} from "./store/api.config";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { setAppKey } from "./store/slices/app.slice";
 import { paymentOptions } from "./utils/helper";
 
 const App: React.FC<Credentials> = (props) => {
-  const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => {
-    return state.app;
-  });
-  const { onChangePaymentOption } = useChangePaymentOption();
-  const [insertPublicKey, insertPublicKeyResponse] =
-    useInsertPublicKeyMutation();
-  const { data, isLoading, isError, error } = useGetPaymentDetailsQuery(state, {
-    skip: !props.reference,
-  });
-
-  React.useEffect(() => {
-    dispatch(
-      setAppKey({
-        key: "credentials",
-        value: props,
-      }),
-    );
-    dispatch(
-      setAppKey({
-        key: "paymentDetails",
-        value: data,
-      }),
-    );
-  }, [props, data]);
-
-  React.useEffect(() => {
-    if (!props.reference && !props.amount && !props.userId) {
-      dispatch(
-        setAppKey({
-          key: "showFailedTransactionView",
-          value: true,
-        }),
-      );
-      dispatch(
-        setAppKey({
-          key: "message",
-          value:
-            "You need to pass either the transaction reference if transaction was initiated by you or pass the reference, amount and userId if you want the SDK to initiate the transaction",
-        }),
-      );
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (isError) {
-      dispatch(
-        setAppKey({
-          key: "showFailedTransactionView",
-          value: true,
-        }),
-      );
-      dispatch(
-        setAppKey({
-          key: "message",
-          value: error?.data?.responseMessage ?? error?.error,
-        }),
-      );
-    }
-  }, [isError, error, dispatch]);
-
-  React.useEffect(() => {
-    const onInsertPublicKey = async () => {
-      await insertPublicKey({
-        ...state,
-        insertPublicKey: {
-          clientId: props.username,
-          publicKey: props.publicKey,
-        },
-      });
-    };
-
-    onInsertPublicKey();
-  }, [props]);
+  const {
+    onChangePaymentOption,
+    insertPublicKeyResponse,
+    createPaymentResponse,
+    isLoading,
+    state,
+    data,
+  } = usePageInitialization(props);
 
   return (
     <Modal style={styles.container}>
@@ -112,7 +40,15 @@ const App: React.FC<Credentials> = (props) => {
         }}
         style={styles.image}
       />
-      {state.showFailedTransactionView ? (
+      {isLoading ||
+      insertPublicKeyResponse.isLoading ||
+      createPaymentResponse.isFetching ? (
+        <ActivityIndicator
+          style={{
+            margin: "auto",
+          }}
+        />
+      ) : state.showFailedTransactionView ? (
         <TransactionFailed />
       ) : state.showSuccessfulTransactionView ? (
         <TransactionSuccessful />
@@ -155,35 +91,25 @@ const App: React.FC<Credentials> = (props) => {
         </View>
       ) : (
         <View style={[{ margin: "auto" }, styles.card]}>
-          {isLoading || insertPublicKeyResponse.isLoading ? (
-            <ActivityIndicator
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-              }}
-            />
-          ) : (
-            <>
-              <View style={styles.textWrapper}>
-                <Text style={styles.amount}>
-                  {data?.currency ?? "NGN"}{" "}
-                  {Intl.NumberFormat("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }).format(data?.amount)}
-                </Text>
-                <Text style={styles.name}>{data?.userId}</Text>
-              </View>
-              <View>
-                <Text style={styles.description}>
-                  Please select your desired payment method to continue.
-                </Text>
-              </View>
-              <Menu position="vertical" />
-              <Footer />
-            </>
-          )}
+          <>
+            <View style={styles.textWrapper}>
+              <Text style={styles.amount}>
+                {data?.currency ?? "NGN"}{" "}
+                {Intl.NumberFormat("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(data?.amount)}
+              </Text>
+              <Text style={styles.name}>{data?.userId}</Text>
+            </View>
+            <View>
+              <Text style={styles.description}>
+                Please select your desired payment method to continue.
+              </Text>
+            </View>
+            <Menu position="vertical" />
+            <Footer />
+          </>
         </View>
       )}
     </Modal>
@@ -263,6 +189,11 @@ const Rexpay: React.FC<{ config: Credentials }> = ({
     rexpayPublicKey,
     username,
     reference,
+    amount,
+    callbackUrl,
+    currency,
+    metadata,
+    userId,
   },
 }) => {
   return (
@@ -276,9 +207,14 @@ const Rexpay: React.FC<{ config: Credentials }> = ({
         password={password}
         mode={mode}
         reference={reference}
+        userId={userId}
+        amount={amount}
+        currency={currency}
+        metadata={metadata}
+        callbackUrl={callbackUrl}
       />
     </Provider>
   );
 };
 
-export default Rexpay;
+export default React.memo(Rexpay);

@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { store } from ".";
 import { endpoints } from "./endpoints";
-import { setAppKey } from "./slices/app.slice";
 import { App, Bank, USSD } from "../model/state";
 import { FormMethod } from "../utils/helper";
 
@@ -28,15 +27,12 @@ export const apiConfig = createApi({
   endpoints: (builder) => ({
     createPayment: builder.mutation({
       query: (state: App) => {
-        const username = state?.credentials?.username;
-        const password = state?.credentials?.password;
-        const credentials = btoa(`${username}:${password}`);
         return {
           url: endpoints.create_payment,
           method: FormMethod.POST,
           body: state.createPayment,
           headers: {
-            Authorization: `Basic ${credentials}`,
+            Authorization: `Basic ${state.credentials?.base64}`,
           },
         };
       },
@@ -48,26 +44,17 @@ export const apiConfig = createApi({
           method: FormMethod.POST,
           body: state.insertPublickey,
           headers: {
-            Authorization: `Basic ${store.getState().app?.encryptedCredential}`,
+            Authorization: `Basic ${state.credentials?.base64}`,
           },
         };
       },
     }),
     getPaymentDetails: builder.query({
       query: (state: App) => {
-        const username = state?.credentials?.username;
-        const password = state?.credentials?.password;
-        const credentials = btoa(`${username}:${password}`);
-        store.dispatch(
-          setAppKey({
-            key: "encryptedCredential",
-            value: credentials,
-          }),
-        );
         return {
           url: endpoints.payment_details + state.credentials.reference,
           headers: {
-            Authorization: `Basic ${credentials}`,
+            Authorization: `Basic ${state.credentials?.base64}`,
           },
         };
       },
@@ -120,4 +107,5 @@ export const {
   useGetTransactionStatusMutation,
   useInsertPublicKeyMutation,
   useInitiateUssdPaymentMutation,
+  useLazyGetPaymentDetailsQuery,
 } = apiConfig;

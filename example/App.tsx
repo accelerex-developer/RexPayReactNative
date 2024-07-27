@@ -17,7 +17,14 @@ export default function App() {
           password:
             "f0bedbea93df09264a4f09a6b38de6e9b924b6cb92bf4a0c07ce46f26f85",
           mode: "TEST",
-          reference: "matt123456",
+          // reference: "sman23oyr1122",
+          reference: String(Math.floor(Math.random() * 10000000)),
+          amount: 100,
+          userId: "matthew@test.com",
+          metadata: {
+            customerName: "Oluwajuwon Matthew",
+            email: "test@test.com",
+          },
         }}
       />
     </View>

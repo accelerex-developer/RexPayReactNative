@@ -14,6 +14,7 @@ const TransactionFailed = () => {
   const state = useAppSelector((state) => {
     return state.app;
   });
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>

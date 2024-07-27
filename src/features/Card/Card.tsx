@@ -126,6 +126,7 @@ const Card = () => {
               keyboardType="number-pad"
               onChangeText={handlePinChange}
               isError={!!pinErr}
+              secureTextEntry
               // value={pin}
             />
           </View>

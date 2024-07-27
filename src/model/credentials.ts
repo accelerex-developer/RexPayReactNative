@@ -12,6 +12,7 @@ export class Credentials {
   userId?: string = "";
   callbackUrl?: string = "";
   metadata?: Metadata = new Metadata();
+  base64?: string = "";
 }
 
 export class Metadata {
