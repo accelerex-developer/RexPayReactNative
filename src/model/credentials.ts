@@ -13,6 +13,8 @@ export class Credentials {
   callbackUrl?: string = "";
   metadata?: Metadata = new Metadata();
   base64?: string = "";
+  showPaymentPage: boolean = false;
+  onClose?: () => void;
 }
 
 export class Metadata {

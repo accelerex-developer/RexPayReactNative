@@ -36,7 +36,7 @@ const appSlice = createSlice({
       };
       return state;
     },
-    setAllAppKeys: (state, action: PayloadAction<AppPayload>) => {
+    setAllAppKeys: (state, action: PayloadAction<App>) => {
       state = action.payload as any;
       return state;
     },

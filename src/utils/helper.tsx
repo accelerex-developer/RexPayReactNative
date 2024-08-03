@@ -14,6 +14,7 @@ export const paymentOptions = [
     imgUri:
       "https://res.cloudinary.com/dzmei5g7b/image/upload/v1720515040/rexpay/card_knkey9.png",
     component: <Card />,
+    id: 0,
   },
   {
     name: "Pay with USSD",
@@ -21,6 +22,7 @@ export const paymentOptions = [
     imgUri:
       "https://res.cloudinary.com/dzmei5g7b/image/upload/v1720515041/rexpay/ussd_b6huci.png",
     component: <USSD />,
+    id: 1,
   },
   {
     name: "Pay with Bank",
@@ -28,6 +30,7 @@ export const paymentOptions = [
     imgUri:
       "https://res.cloudinary.com/dzmei5g7b/image/upload/v1720515040/rexpay/bank_pil8kp.png",
     component: <Bank />,
+    id: 2,
   },
 ];
 

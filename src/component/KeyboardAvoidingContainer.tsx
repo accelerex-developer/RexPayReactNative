@@ -3,8 +3,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 
 const KeyboardAvoidingContainer = ({
@@ -18,7 +18,9 @@ const KeyboardAvoidingContainer = ({
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ flex: 1 }}>{children}</View>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+          {children}
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

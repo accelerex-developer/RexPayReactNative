@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
 import SubmitButton from "../../component/SubmitButton";
+import useGetTransactionStatus from "../../hooks/useGetTransactionStatus";
 import { useInitiateUssdPaymentMutation } from "../../store/api.config";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUssdKey } from "../../store/slices/ussd.slice";
 
 const USSD = () => {
   const dispatch = useAppDispatch();
+  const [shouldInitiate, setShouldInitiate] = useState(false);
   const [showUssdCode, setSetshowUssdCode] = useState(false);
   const state = useAppSelector((state) => {
     return state.ussd;
@@ -33,8 +35,16 @@ const USSD = () => {
         },
       });
 
-      if (response.error) {
-        Alert.alert("Error occurred", "Something went wrong");
+      if (
+        response.error ||
+        (response?.data?.responseCode && response?.data?.responseCode !== "00")
+      ) {
+        Alert.alert(
+          "Error occurred",
+          response.error?.data?.responseMessage ??
+            response?.data?.responseMessage ??
+            "Something went wrong",
+        );
       } else {
         setSetshowUssdCode(true);
         dispatch(
@@ -49,6 +59,18 @@ const USSD = () => {
       Alert.alert("Error occurred", "Something went wrong, try again later.");
     }
   }, []);
+
+  const { transactionStatusResponse } = useGetTransactionStatus(
+    state,
+    shouldInitiate,
+  );
+  // console.log(transactionStatusResponse);
+
+  useEffect(() => {
+    if (ussdPaymentResponse.isSuccess) {
+      setShouldInitiate(true);
+    }
+  }, [ussdPaymentResponse.isSuccess]);
 
   return (
     <View
@@ -142,9 +164,18 @@ const USSD = () => {
         )}
       </View>
       <SubmitButton
-        disabled={!bankName}
+        disabled={
+          !bankName ||
+          ussdPaymentResponse.isLoading ||
+          transactionStatusResponse?.isLoading
+        }
         style={{
-          backgroundColor: !bankName ? "#F25B61" : "#ED1C25",
+          backgroundColor:
+            !bankName ||
+            ussdPaymentResponse.isLoading ||
+            transactionStatusResponse?.isLoading
+              ? "#F25B61"
+              : "#ED1C25",
           justifyContent: "center",
           alignItems: "center",
           paddingHorizontal: 16,
@@ -153,7 +184,9 @@ const USSD = () => {
           flexDirection: "row",
         }}
         onPress={onUssdPayment}
-        loading={ussdPaymentResponse.isLoading}
+        loading={
+          ussdPaymentResponse.isLoading || transactionStatusResponse?.isLoading
+        }
       >
         Proceed
       </SubmitButton>

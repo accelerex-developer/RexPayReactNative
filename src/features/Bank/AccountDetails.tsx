@@ -1,53 +1,16 @@
-import React, { useCallback } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 import SubmitButton from "../../component/SubmitButton";
-import { useGetTransactionStatusMutation } from "../../store/api.config";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setAppKey } from "../../store/slices/app.slice";
+import useGetTransactionStatus from "../../hooks/useGetTransactionStatus";
+import { useAppSelector } from "../../store/hooks";
 
 const AccountDetails = () => {
-  const dispatch = useAppDispatch();
   const state = useAppSelector((state) => {
     return state.bank;
   });
-  const [getTransactionStatus, transactionStatusResponse] =
-    useGetTransactionStatusMutation();
-
-  const onGetTransactionStatus = useCallback(async () => {
-    try {
-      const response = await getTransactionStatus(
-        state.response?.transactionReference,
-      );
-
-      if (response.data?.responseCode === "00") {
-        dispatch(
-          setAppKey({
-            key: "showSuccessfulTransactionView",
-            value: true,
-          }),
-        );
-        dispatch(
-          setAppKey({
-            key: "transactionResponse",
-            value: response.data,
-          }),
-        );
-      } else if (response.data?.responseCode === "02") {
-        Alert.alert("Transaction Pending", response.data?.responseDescription);
-      } else {
-        dispatch(
-          setAppKey({
-            key: "transactionResponse",
-            value: response.data,
-          }),
-        );
-      }
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Error occurred", "Something went wrong, try again later.");
-    }
-  }, [dispatch, state]);
+  const { transactionStatusResponse, onGetTransactionStatus } =
+    useGetTransactionStatus(state, true);
 
   return (
     <View style={{ position: "relative", flex: 1 }}>
@@ -130,8 +93,11 @@ const AccountDetails = () => {
         <SubmitButton
           loading={transactionStatusResponse.isLoading}
           onPress={onGetTransactionStatus}
+          disabled={transactionStatusResponse.isLoading}
         >
-          I have completed the transfer
+          {transactionStatusResponse.isLoading
+            ? "Processing"
+            : "I have completed the transfer"}
         </SubmitButton>
       </View>
     </View>

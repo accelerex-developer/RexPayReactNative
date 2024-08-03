@@ -1,11 +1,16 @@
-import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, View } from "react-native";
 import { Rexpay } from "rexpay-react-native";
 
 export default function App() {
+  const [open, setOpen] = useState(false);
   return (
     <View style={styles.container}>
+      <Button title="Pay Now" onPress={() => setOpen(true)} />
       <Rexpay
         config={{
+          showPaymentPage: open,
+          onClose: () => setOpen(false),
           rexpayPublicKey:
             "-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion: Keybase OpenPGP v1.0.0\nComment: https://keybase.io/crypto\n\nxo0EYKuUZgEEAJ3DqHrrgHXrvdLeJo538tT7Pml+VQjW/fOwHKGHNzQ6Yf+EMpt8\nNTSxU2Pu6QjvxGNqEU+5Ejix8Mf57Iyn+Jlhk5nLG4rR/z390wBwyLZzFhgsYKif\n5hdKpdg0+CEInp8hwFQyKcH99SDFRhvs6KBB/iHearkCIrwEYKOtn4M5ABEBAAHN\nJ0FkZWJheW8gQWRlbml5YW4gPGFkZWJlc2xpY2tAZ21haWwuY29tPsKtBBMBCgAX\nBQJgq5RmAhsvAwsJBwMVCggCHgECF4AACgkQlaZA9sBWJb95nAP/SiHrax4LSR6b\n9aWuzCKwb2URR+DIU9sZMSBhVn2ff8i2JzOEn9IjALJU7pIGPhuf9Dj4iAmOjEts\naM9uggnd5LwUEa3zmRcV+8pqez1e09DJNp437VfFpDU2uzjTX4JSQP2J7L73+lOX\nkfcYoxKCsOXuz77iHXUA2BVE7LiBtILOjQRgq5RmAQQAuzdGaE4FR4IaDp1EhQlX\n8xFJrfawWWGsEi5IIgwzujWtUiZd379pguAMe0j9Mo2KaMNVHSkMu6GtgEmtbka7\nIJ/MEFmb68cx/FH0YPNSRhOjJglbun0/P9ohbIDoNtCrDoscbWKiP3X0UGa5wpul\ncJ3nhQXgtSuYzf58DbzdIjsAEQEAAcLAgwQYAQoADwUCYKuUZgUJDwmcAAIbLgCo\nCRCVpkD2wFYlv50gBBkBCgAGBQJgq5RmAAoJEGzORcMDtTyGFbMEAJayRvgeVs4K\nY9Eg2/gU3x7ZXiIp2s09pTp2CXJSsrj3wfFfzY/mB9At2BDQd0Infv2MMI5PaPDc\n1xTxSCvlEEwqrpMDU0NjjX7bWScmbY3VRf6QLNXw2YbIpd8leSYjxYLdW2IFXM6Z\n1JOgYo6J8Z+51SsFEer3Q4Qq8TNj0G0HbOcD/19RojnSDYXXdcXzo7z+xVd47I0B\nH9Zeik8DXmw4M1ZxPvhgBOwyBvDFZNIc0FFlfJ7miA6tn4mzXFbInRo9nI4Mahug\n5JF2jzHP2tKBrco+EChJ1FuoXN9fZ1jvtIfCpsUnfFj+ws5EeutMk0lp830i3QCP\nxkoa5yM+1f3C6jAazo0EYKuUZgEEAMo518czkUlqSUjfNEVJy2NMwWtDKo2Lr8av\nTGkrFdhJoQC2Jy55LFZtrQ3oJX+6iNgmb7cHG83nbJ1DVEaJ+kZoSA4f4OfULsKW\nctU6fU+r8PAlis3n7RzQUbHMBdulDOwgPM5G1grBlci19i1QbzjlIOW/aMp1znkf\n6tw90zVXABEBAAHCwIMEGAEKAA8FAmCrlGYFCQ8JnAACGy4AqAkQlaZA9sBWJb+d\nIAQZAQoABgUCYKuUZgAKCRBP1RVoKGjtdmyFA/9/Nxzl349Nmu3gLV+6B7ybk/av\n5m41vIcjwqWX1LuoZVp7CwnlSKHkTiThBDs7wBt7Zx1A0qLEc0ibkjAKG67ZimLX\noaBh0jLkVgvb/ptQl/lI2Vb+yRfWigWlF8BES89Qr2CnjBbUrO+8T6YVw4311B1E\n0iGZIvPJa5eRKrZFwyYkBACIucDHDP9Kfca1EUKX2jDucjLP79XXzyZiRvXXvR4E\nAYHEW6lIMLDxD7ie1TEJzVfZYUHRgcXaZeAHk0dSoMQnm3pF2un7KZEA6AjmdU5A\n/e9yzVX1Lw6l+BkYeovhFswz+r4A65pDIUOGJ1UXUGEaeAzvTYSlrcPcmQYVcL4k\n4g==\n=6uW/\n-----END PGP PUBLIC KEY BLOCK-----",
           publicKey:

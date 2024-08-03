@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 import useChangePaymentOption from "../hooks/useChangePaymentOption";
+import { useAppSelector } from "../store/hooks";
 import { paymentOptions } from "../utils/helper";
 
 export interface MenuTypes {
@@ -9,6 +10,9 @@ export interface MenuTypes {
 }
 
 const Menu: React.FC<MenuTypes> = ({ position = "vertical" }) => {
+  const state = useAppSelector((state) => {
+    return state.app;
+  });
   const { onChangePaymentOption } = useChangePaymentOption();
   const styles = StyleSheet.create({
     row: {
@@ -61,6 +65,16 @@ const Menu: React.FC<MenuTypes> = ({ position = "vertical" }) => {
               {position === "vertical" ? item.name : item.horizontalName}
             </Text>
           </View>
+          {position === "horizontal" && state.current === index && (
+            <View
+              style={{
+                height: 3,
+                width: "100%",
+                backgroundColor: "#ED1C25",
+                marginTop: 2,
+              }}
+            />
+          )}
           {position !== "horizontal" && (
             <Image
               source={{
