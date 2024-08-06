@@ -60,10 +60,8 @@ const USSD = () => {
     }
   }, []);
 
-  const { transactionStatusResponse } = useGetTransactionStatus(
-    state,
-    shouldInitiate,
-  );
+  const { transactionStatusResponse, onGetTransactionStatus } =
+    useGetTransactionStatus(state, shouldInitiate);
   // console.log(transactionStatusResponse);
 
   useEffect(() => {
@@ -183,12 +181,16 @@ const USSD = () => {
           borderRadius: 4,
           flexDirection: "row",
         }}
-        onPress={onUssdPayment}
+        onPress={() =>
+          ussdPaymentResponse.isSuccess
+            ? onGetTransactionStatus()
+            : onUssdPayment()
+        }
         loading={
           ussdPaymentResponse.isLoading || transactionStatusResponse?.isLoading
         }
       >
-        Proceed
+        {ussdPaymentResponse.isSuccess ? "I have completed payment" : "Proceed"}
       </SubmitButton>
     </View>
   );

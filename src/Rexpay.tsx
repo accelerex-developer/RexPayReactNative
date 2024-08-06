@@ -47,17 +47,13 @@ const App: React.FC<Credentials> = (props) => {
   };
 
   return (
-    <Modal
-      visible={props.showPaymentPage}
-      onDismiss={handleClose}
-      style={styles.container}
-    >
+    <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" />
       <TouchableOpacity
         style={{
           position: "absolute",
           top: 50,
-          left: 20,
+          right: 20,
           zIndex: 99999999,
         }}
         onPress={() =>
@@ -143,7 +139,57 @@ const App: React.FC<Credentials> = (props) => {
           </>
         </View>
       )}
-    </Modal>
+    </View>
+  );
+};
+
+const Rexpay: React.FC<{ config: Credentials }> = ({
+  config: {
+    mode,
+    passPhrase,
+    password,
+    privateKey,
+    publicKey,
+    rexpayPublicKey,
+    username,
+    reference,
+    amount,
+    callbackUrl,
+    currency,
+    metadata,
+    userId,
+    showPaymentPage,
+    onClose,
+  },
+}) => {
+  return (
+    <Provider store={store}>
+      <Modal
+        visible={showPaymentPage}
+        onDismiss={onClose}
+        style={styles.container}
+      >
+        <KeyboardAvoidingContainer>
+          <App
+            rexpayPublicKey={rexpayPublicKey}
+            publicKey={publicKey}
+            privateKey={privateKey}
+            passPhrase={passPhrase}
+            username={username}
+            password={password}
+            mode={mode}
+            reference={reference}
+            userId={userId}
+            amount={amount}
+            currency={currency}
+            metadata={metadata}
+            callbackUrl={callbackUrl}
+            showPaymentPage={showPaymentPage}
+            onClose={onClose}
+          />
+        </KeyboardAvoidingContainer>
+      </Modal>
+    </Provider>
   );
 };
 
@@ -209,52 +255,5 @@ const styles = StyleSheet.create({
     width: "90%",
   },
 });
-
-const Rexpay: React.FC<{ config: Credentials }> = ({
-  config: {
-    mode,
-    passPhrase,
-    password,
-    privateKey,
-    publicKey,
-    rexpayPublicKey,
-    username,
-    reference,
-    amount,
-    callbackUrl,
-    currency,
-    metadata,
-    userId,
-    showPaymentPage,
-    onClose,
-  },
-}) => {
-  if (showPaymentPage) {
-    return (
-      <Provider store={store}>
-        <KeyboardAvoidingContainer>
-          <App
-            rexpayPublicKey={rexpayPublicKey}
-            publicKey={publicKey}
-            privateKey={privateKey}
-            passPhrase={passPhrase}
-            username={username}
-            password={password}
-            mode={mode}
-            reference={reference}
-            userId={userId}
-            amount={amount}
-            currency={currency}
-            metadata={metadata}
-            callbackUrl={callbackUrl}
-            showPaymentPage={showPaymentPage}
-            onClose={onClose}
-          />
-        </KeyboardAvoidingContainer>
-      </Provider>
-    );
-  }
-  return null;
-};
 
 export default React.memo(Rexpay);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { Alert } from "react-native";
 
 import { useGetTransactionStatusMutation } from "../store/api.config";
@@ -35,8 +35,11 @@ const useGetTransactionStatus = (state: any, initiate: boolean = false) => {
       //   }
       else {
         Alert.alert(
-          response?.error?.data?.responseStatus,
-          response?.error?.data?.responseMessage,
+          response?.error?.data?.responseStatus ||
+            response?.data?.responseStatus,
+          response?.error?.data?.responseMessage ??
+            response?.data?.responseMessage ??
+            response?.data?.responseDescription,
         );
         dispatch(
           setAppKey({
@@ -51,38 +54,33 @@ const useGetTransactionStatus = (state: any, initiate: boolean = false) => {
     }
   }, [dispatch, getTransactionStatus, state]);
 
-  useEffect(() => {
-    if (initiate) {
-      // Execute the function immediately
-      onGetTransactionStatus();
-    }
+  // useEffect(() => {
+  //   if (initiate) {
+  //     onGetTransactionStatus();
+  //   }
 
-    let intervalId: any;
+  //   let intervalId: any;
 
-    // Check if the response indicates that a periodic check is needed
-    if (
-      transactionStatusResponse?.data?.responseDescription
-        ?.toLowerCase()
-        .includes("in progress")
-    ) {
-      // Set up an interval to call the function every 30 seconds
-      intervalId = setInterval(() => {
-        onGetTransactionStatus();
-      }, 30000); // 30 seconds
-    }
+  //   if (
+  //     transactionStatusResponse?.data?.responseDescription
+  //       ?.toLowerCase()
+  //       .includes("in progress")
+  //   ) {
+  //     intervalId = setInterval(() => {
+  //       onGetTransactionStatus();
+  //     }, 30000);
+  //   }
 
-    // Clean up the interval on component unmount
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [
-    onGetTransactionStatus,
-    transactionStatusResponse?.data?.responseDescription,
-  ]);
+  //   return () => {
+  //     if (intervalId) {
+  //       clearInterval(intervalId);
+  //     }
+  //   };
+  // }, [
+  //   onGetTransactionStatus,
+  //   transactionStatusResponse?.data?.responseDescription,
+  // ]);
 
-  // Return the function if you need to call it manually or for testing purposes
   return { onGetTransactionStatus, transactionStatusResponse };
 };
 
