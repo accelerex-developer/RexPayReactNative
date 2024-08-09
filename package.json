@@ -28,7 +28,9 @@
   "author": "matarazy22 <matthewoluwajuwon056@gmail.com> (https://github.com/Matthew-Oluwajuwon)",
   "license": "MIT",
   "homepage": "https://github.com/accelerex-developer/RexPayReactNative#readme",
-  "dependencies": {},
+  "dependencies": {
+    "rexpay": "^1.0.5"
+  },
   "devDependencies": {
     "@types/react": "^18.0.25",
     "expo-module-scripts": "^3.5.2",
