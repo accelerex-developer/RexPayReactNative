@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "rexpay-react-native": ["../src/index"],
+      "rexpay-react-native/*": ["../src/*"]
+    }
+  }
+}

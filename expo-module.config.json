@@ -1,0 +1,9 @@
+{
+  "platforms": ["ios", "tvos", "android", "web"],
+  "ios": {
+    "modules": ["RexpayReactNativeModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.rexpayreactnative.RexpayReactNativeModule"]
+  }
+}
