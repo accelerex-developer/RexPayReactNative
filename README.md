@@ -28,7 +28,7 @@ for expo applications run;
 
 and that's it, you're all good to go!
 
-<img width="306" alt="Screenshot of library in action" src="https://user-images.githubusercontent.com/41248079/126550307-5f12c6d8-81af-4f26-951b-5d6514304022.png">
+<img width="306" alt="Screenshot of library in action" src="https://github.com/user-attachments/assets/3f6db6b2-2274-4046-9f0e-56a79395d78d">
 
 ### [](https://github.com/user-attachments/assets/3f6db6b2-2274-4046-9f0e-56a79395d78d)Usage 1
 
