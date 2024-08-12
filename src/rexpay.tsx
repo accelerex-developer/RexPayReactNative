@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   Alert,
+  Image,
 } from "react-native";
 import RexpayGatway from "rexpay";
 import { WebView, type WebViewNavigation } from "react-native-webview";
@@ -106,10 +107,6 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
       }
     };
 
-    if (authorizationUrl && !isLoading) {
-      console.log("INJECTED_JAVASCRIPT", INJECTED_JAVASCRIPT);
-    }
-
     const onNavigationStateChange = (event: WebViewNavigation) => {
       // when page is done loading hide our loader
       if (isLoading && !event.loading && event.title) {
@@ -129,7 +126,7 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
         visible={isModalVisible}
         onShow={handlePaymentInitiation}
       >
-        <SafeAreaView style={style.modal}>
+        <View style={style.modal}>
           <WebView
             ref={webView}
             style={style.modal}
@@ -141,10 +138,14 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
 
           {isLoading && (
             <View style={style.indicator}>
+              <Image
+                style={StyleSheet.absoluteFill}
+                source={require("../assets/bg.png")}
+              />
               <ActivityIndicator color={activityIndicatorColor} />
             </View>
           )}
-        </SafeAreaView>
+        </View>
       </Modal>
     );
   }
