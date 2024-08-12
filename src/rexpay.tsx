@@ -9,16 +9,14 @@ import {
   View,
   Modal,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
-  Alert,
   Image,
 } from "react-native";
 import RexpayGatway from "rexpay";
 import { WebView, type WebViewNavigation } from "react-native-webview";
 
 import type { InitializeResponse, RexPayProps, RexPayRef } from "./types";
-import { INJECTED_JAVASCRIPT } from "./class";
+import React from "react";
 
 const rexpay = new RexpayGatway();
 

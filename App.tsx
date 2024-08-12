@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import Rexpay, { RexPayRef } from "./src";
+import React from "react";
 
 export default function App() {
   const ref = useRef<RexPayRef>(null);

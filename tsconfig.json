@@ -1,6 +1,20 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "lib",
+    "lib": ["esnext"],
+    "jsx": "react",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["types/*"]  // This helps TypeScript resolve type definitions
+    }
+  },
+  "include": ["src"], // Only include src directory for compilation
+  "exclude": ["node_modules", "src/**/*.test.tsx"] // Exclude test files or directories if necessary
 }
