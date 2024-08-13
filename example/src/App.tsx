@@ -10,16 +10,14 @@ export default function App() {
     <View style={style.container}>
       <Rexpay
         ref={ref}
-        mode="Live"
+        mode="Debug"
         amount={1000}
         onClose={(_reason) => {}}
         userId="amakirij@gmail.com"
         onSuccess={(_response) => {}}
         metadata={{
-          currency: 'NGN',
           lastName: 'Joseph',
           firstName: 'Amakiri',
-          phone: '08132978120',
           email: 'amakirij@gmail.com',
         }}
       />

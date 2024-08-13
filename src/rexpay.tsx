@@ -75,15 +75,12 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
           callbackUrl,
         });
 
-        console.log('handlePaymentInitiation', { response });
-
         if (!response.success) {
           throw Error(response.message);
         }
 
         setAuthorizationUrl(response.data.authorizeUrl);
       } catch (error: any) {
-        console.log('handlePaymentInitiation', { error });
         onCancel({
           status: 'Failed',
           message: error.message,
@@ -97,10 +94,8 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
         const response = await rexpay.verifyPayment({
           transactionReference: reference,
         });
-        console.log('verifyPayment', { response });
         onSuccess({ status: 'Success', data: response?.data });
       } catch (error: any) {
-        console.log('verifyPayment', { error });
         onCancel({
           status: 'Failed',
           message: error.message,
