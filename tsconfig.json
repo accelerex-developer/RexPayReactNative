@@ -1,20 +1,29 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "lib",
-    "lib": ["esnext"],
-    "jsx": "react",
-    "skipLibCheck": true,
+    "rootDir": ".",
+    "paths": {
+      "react-native-rexpay-webview": ["./src/index"]
+    },
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["types/*"]  // This helps TypeScript resolve type definitions
-    }
-  },
-  "include": ["src"], // Only include src directory for compilation
-  "exclude": ["node_modules", "src/**/*.test.tsx"] // Exclude test files or directories if necessary
+    "jsx": "react-jsx",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "verbatimModuleSyntax": true
+  }
 }

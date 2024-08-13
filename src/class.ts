@@ -1,5 +1,5 @@
-const PAY_OPTIONS_CLASS = ".pay_options";
-const CONTAINER_CLASS = ".container-fluid";
+const PAY_OPTIONS_CLASS = '.pay_options';
+const CONTAINER_CLASS = '.container-fluid';
 const PAYMENT_TAB_CLASS = `${CONTAINER_CLASS} ${PAY_OPTIONS_CLASS} .col`;
 
 // Use this to change payment modal styles to look better on mobile screens

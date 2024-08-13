@@ -33,9 +33,9 @@ and that's it, you're all good to go!
 ### [](https://github.com/user-attachments/assets/3f6db6b2-2274-4046-9f0e-56a79395d78d)Usage 1
 
 ```javascript
-import React from "react";
-import { Paystack } from "react-native-rexpay-webview";
-import { View } from "react-native";
+import React from 'react';
+import { Paystack } from 'react-native-rexpay-webview';
+import { View } from 'react-native';
 
 export default function App() {
   return (
@@ -108,13 +108,13 @@ const style = StyleSheet.create({
 
 ## API's
 
-| Name                                 |                                                                                   use/description                                                                                   |                                                      extra |
-| :----------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | ---------------------------------------------------------: |
-| `amount`                             |                                                                                  Amount to be paid                                                                                  |                                                     `nill` |
-| `activityIndicatorColor`             |                                                                                   color of loader                                                                                   |                                           default: `green` |
-| `userId(required by rexpay)` |                                                                                    Billers userId                                                                                    |                                            default: `nill` |
-| `onClose`                           |       callback function if the user cancels or the payment transaction cannot be verified. In a case of not being verified       |                                            default: `nill` |
-| `onSuccess`                          |                            callback function if the transaction was successful and verified (it will also return the reference number in the callback )                            |                                            default: `nill` |
-| `autoStart`                          |                                                                       Auto start payment once page is opened                                                                        |                                           default: `false` |
-| `reference`                          |                                                                 Reference number, if you have already generated one                                                                 | default: `Date.now().toString()` |
-| `metadata`                          |                                                                 Extra metadata about the transaction                                                                | default: `{}` |
+| Name                         |                                                       use/description                                                        |                            extra |
+| :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------: | -------------------------------: |
+| `amount`                     |                                                      Amount to be paid                                                       |                           `nill` |
+| `activityIndicatorColor`     |                                                       color of loader                                                        |                 default: `green` |
+| `userId(required by rexpay)` |                                                        Billers userId                                                        |                  default: `nill` |
+| `onClose`                    |     callback function if the user cancels or the payment transaction cannot be verified. In a case of not being verified     |                  default: `nill` |
+| `onSuccess`                  | callback function if the transaction was successful and verified (it will also return the reference number in the callback ) |                  default: `nill` |
+| `autoStart`                  |                                            Auto start payment once page is opened                                            |                 default: `false` |
+| `reference`                  |                                     Reference number, if you have already generated one                                      | default: `Date.now().toString()` |
+| `metadata`                   |                                             Extra metadata about the transaction                                             |                    default: `{}` |

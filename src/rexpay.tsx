@@ -4,19 +4,18 @@ import {
   useEffect,
   forwardRef,
   useImperativeHandle,
-} from "react";
+} from 'react';
 import {
   View,
   Modal,
+  Image,
   StyleSheet,
   ActivityIndicator,
-  Image,
-} from "react-native";
-import RexpayGatway from "rexpay";
-import { WebView, type WebViewNavigation } from "react-native-webview";
+} from 'react-native';
+import RexpayGatway from 'rexpay';
+import { WebView, type WebViewNavigation } from 'react-native-webview';
 
-import type { InitializeResponse, RexPayProps, RexPayRef } from "./types";
-import React from "react";
+import type { InitializeResponse, RexPayProps, RexPayRef } from './types';
 
 const rexpay = new RexpayGatway();
 
@@ -26,14 +25,14 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
       userId,
       amount = 0,
       metadata = {},
-      mode = "Debug",
-      currency = "NGN",
+      mode = 'Debug',
+      currency = 'NGN',
       autoStart = false,
       onClose: __onClose,
       onSuccess: __onSuccess,
-      callbackUrl = "mobile",
+      callbackUrl = 'mobile',
       reference = Date.now().toString(),
-      activityIndicatorColor = "#ffffff",
+      activityIndicatorColor = '#ffffff',
     },
     ref
   ) => {
@@ -76,16 +75,19 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
           callbackUrl,
         });
 
-        if (!response.success || !response.data?.authorizeUrl) {
+        console.log('handlePaymentInitiation', { response });
+
+        if (!response.success) {
           throw Error(response.message);
         }
 
         setAuthorizationUrl(response.data.authorizeUrl);
       } catch (error: any) {
+        console.log('handlePaymentInitiation', { error });
         onCancel({
-          status: "Failed",
+          status: 'Failed',
           message: error.message,
-          error: "Payment initiation failed",
+          error: 'Payment initiation failed',
         });
       }
     };
@@ -95,12 +97,14 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
         const response = await rexpay.verifyPayment({
           transactionReference: reference,
         });
-        onSuccess({ status: "Success", data: response?.data });
+        console.log('verifyPayment', { response });
+        onSuccess({ status: 'Success', data: response?.data });
       } catch (error: any) {
+        console.log('verifyPayment', { error });
         onCancel({
-          status: "Failed",
+          status: 'Failed',
           message: error.message,
-          error: "Payment verification failed",
+          error: 'Payment verification failed',
         });
       }
     };
@@ -111,10 +115,12 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
         setIsLoading(event.loading);
       }
 
-      if (event.url?.includes("mobile")) {
+      if (event.url?.includes('mobile')) {
         verifyPayment();
       }
     };
+
+    console.log({ authorizationUrl });
 
     return (
       <Modal
@@ -129,6 +135,7 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
             ref={webView}
             style={style.modal}
             cacheEnabled={false}
+            scrollEnabled={false}
             cacheMode="LOAD_NO_CACHE"
             source={{ uri: authorizationUrl! }}
             onNavigationStateChange={onNavigationStateChange}
@@ -138,7 +145,7 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
             <View style={style.indicator}>
               <Image
                 style={StyleSheet.absoluteFill}
-                source={require("../assets/bg.png")}
+                source={require('./assets/bg.png')}
               />
               <ActivityIndicator color={activityIndicatorColor} />
             </View>
@@ -154,9 +161,9 @@ const style = StyleSheet.create({
     flex: 1,
   },
   indicator: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     ...StyleSheet.absoluteFillObject,
   },
 });
