@@ -1,7 +1,10 @@
 import { useRef } from 'react';
+import Rexpay, { type RexPayRef } from 'react-native-rexpay-webview';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import Rexpay, { type RexPayRef } from 'react-native-rexpay-webview';
+const DEFAULT_CLIENT = 'talk2phasahsyyahoocom';
+const DEFAULT_SECRET =
+  'f0bedbea93df09264a4f09a6b38de6e9b924b6cb92bf4a0c07ce46f26f85';
 
 export default function App() {
   const ref = useRef<RexPayRef>(null);
@@ -12,8 +15,10 @@ export default function App() {
         ref={ref}
         mode="Debug"
         amount={1000}
+        clientId={DEFAULT_CLIENT}
         onClose={(_reason) => {}}
         userId="amakirij@gmail.com"
+        clientSecret={DEFAULT_SECRET}
         onSuccess={(_response) => {}}
         metadata={{
           lastName: 'Joseph',

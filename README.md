@@ -34,8 +34,11 @@ and that's it, you're all good to go!
 
 ```javascript
 import React from 'react';
-import { Paystack } from 'react-native-rexpay-webview';
 import { View } from 'react-native';
+import { Paystack } from 'react-native-rexpay-webview';
+
+// USE OUR TEST clientId: talk2phasahsyyahoocom
+// USE OUR TEST clientSecret: f0bedbea93df09264a4f09a6b38de6e9b924b6cb92bf4a0c07ce46f26f85
 
 export default function App() {
   return (
@@ -43,6 +46,8 @@ export default function App() {
       <Rexpay
         amount={250}
         userId="test@gmail.com"
+        clientId={'your (live|debug) client id'}
+        clientSecret={'your (live|debug) client secret'}
         onClose={(e) => {
           // handle response here
         }}
@@ -65,6 +70,9 @@ import { useRef } from "react";
 import Rexpay, { type RexPayRef } from "react-native-rexpay-webview";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+// USE OUR TEST clientId: talk2phasahsyyahoocom
+// USE OUR TEST clientSecret: f0bedbea93df09264a4f09a6b38de6e9b924b6cb92bf4a0c07ce46f26f85
+
 export default function App() {
   const ref = useRef<RexPayRef>(null);
 
@@ -74,8 +82,14 @@ export default function App() {
         ref={ref}
         amount={100}
         userId="test@gmail.com"
-        onClose={(reason) => {}}
-        onSuccess={(response) => {}}
+        clientId={'your (live|debug) client id'}
+        clientSecret={'your (live|debug) client secret'}
+        onClose={(e) => {
+          // handle response here
+        }}
+        onSuccess={(res) => {
+          // handle response here
+        }}
       />
 
       <TouchableOpacity
@@ -108,13 +122,15 @@ const style = StyleSheet.create({
 
 ## API's
 
-| Name                         |                                                       use/description                                                        |                            extra |
-| :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------: | -------------------------------: |
-| `amount`                     |                                                      Amount to be paid                                                       |                           `nill` |
-| `activityIndicatorColor`     |                                                       color of loader                                                        |                 default: `green` |
-| `userId(required by rexpay)` |                                                        Billers userId                                                        |                  default: `nill` |
-| `onClose`                    |     callback function if the user cancels or the payment transaction cannot be verified. In a case of not being verified     |                  default: `nill` |
-| `onSuccess`                  | callback function if the transaction was successful and verified (it will also return the reference number in the callback ) |                  default: `nill` |
-| `autoStart`                  |                                            Auto start payment once page is opened                                            |                 default: `false` |
-| `reference`                  |                                     Reference number, if you have already generated one                                      | default: `Date.now().toString()` |
-| `metadata`                   |                                             Extra metadata about the transaction                                             |                    default: `{}` |
+| Name                               |                                                       use/description                                                        |                            extra |
+| :--------------------------------- | :--------------------------------------------------------------------------------------------------------------------------: | -------------------------------: |
+| `amount`                           |                                                      Amount to be paid                                                       |                           `nill` |
+| `clientId(required by rexpay)`     |                                                 your live or debug client id                                                 |                       `required` |
+| `clientSecret(required by rexpay)` |                                               your live or debug client secret                                               |                       `required` |
+| `activityIndicatorColor`           |                                                       color of loader                                                        |                 default: `green` |
+| `userId(required by rexpay)`       |                                                        Billers userId                                                        |                  default: `nill` |
+| `onClose`                          |     callback function if the user cancels or the payment transaction cannot be verified. In a case of not being verified     |                  default: `nill` |
+| `onSuccess`                        | callback function if the transaction was successful and verified (it will also return the reference number in the callback ) |                  default: `nill` |
+| `autoStart`                        |                                            Auto start payment once page is opened                                            |                 default: `false` |
+| `reference`                        |                                     Reference number, if you have already generated one                                      | default: `Date.now().toString()` |
+| `metadata`                         |                                             Extra metadata about the transaction                                             |                    default: `{}` |

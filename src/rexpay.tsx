@@ -12,18 +12,17 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import RexpayGatway from 'rexpay';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
+import RexPayGateway from './gateway';
 
-import type { InitializeResponse, RexPayProps, RexPayRef } from './types';
-
-const rexpay = new RexpayGatway();
+import type { RexPayProps, RexPayRef } from './types';
 
 export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
   (
     {
-      userId,
+      clientId,
       amount = 0,
+      clientSecret,
       metadata = {},
       mode = 'Debug',
       currency = 'NGN',
@@ -33,6 +32,7 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
       callbackUrl = 'mobile',
       reference = Date.now().toString(),
       activityIndicatorColor = '#ffffff',
+      ...restPaymentProps
     },
     ref
   ) => {
@@ -65,14 +65,15 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
 
     const handlePaymentInitiation = async () => {
       try {
-        const response: InitializeResponse = await rexpay.initializePayment({
+        const rexpay = new RexPayGateway({ clientId, clientSecret });
+        const response = await rexpay.initializePayment({
           mode,
           amount,
-          userId,
           metadata,
           currency,
           reference,
           callbackUrl,
+          ...restPaymentProps,
         });
 
         if (!response.success) {
@@ -91,9 +92,8 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
 
     const verifyPayment = async () => {
       try {
-        const response = await rexpay.verifyPayment({
-          transactionReference: reference,
-        });
+        const rexpay = new RexPayGateway({ clientId, clientSecret });
+        const response = await rexpay.verifyPayment({ reference });
         onSuccess({ status: 'Success', data: response?.data });
       } catch (error: any) {
         onCancel({
@@ -114,8 +114,6 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
         verifyPayment();
       }
     };
-
-    console.log({ authorizationUrl });
 
     return (
       <Modal
