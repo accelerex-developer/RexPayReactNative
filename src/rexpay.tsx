@@ -130,8 +130,8 @@ export const Rexpay = forwardRef<RexPayRef, RexPayProps>(
             cacheEnabled={false}
             scrollEnabled={false}
             cacheMode="LOAD_NO_CACHE"
-            source={{ uri: authorizationUrl! }}
             onNavigationStateChange={onNavigationStateChange}
+            source={authorizationUrl ? { uri: authorizationUrl } : undefined}
           />
 
           {isLoading && (
